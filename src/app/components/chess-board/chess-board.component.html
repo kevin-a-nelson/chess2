@@ -1,0 +1,17 @@
+<div class="chess-board">
+    <div class="row"
+        *ngFor="let row of chessBoard; index as rowIdx"
+        >
+        <div class="column"
+            *ngFor="let column of row; index as columnIdx"
+            >
+            <app-chess-board-square
+                [chessPiece]="chessPiece(rowIdx, columnIdx)"
+                [isSelected]="isSelected(rowIdx, columnIdx)"
+                [color]="color(rowIdx, columnIdx)"
+                (click)="selectSquare(rowIdx, columnIdx)"
+            >
+            </app-chess-board-square>
+        </div>
+    </div>
+</div>

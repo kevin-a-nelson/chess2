@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ChessBoardComponent } from './chess-board/chess-board.component';
-
+import { ChessBoardComponent } from './components/chess-board/chess-board.component';
+import { ChessBoardSquareComponent } from './components/chess-board-square/chess-board-square.component';
 
 const routes: Routes = [
   {
     path: 'play',
     component: ChessBoardComponent,
+  },
+  {
+    path: 'play2',
+    component: ChessBoardSquareComponent,
   },
   {
     path: '',
