@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import chessPieces from '../../../public/chessPieces';
+import chessBoard from '../../../public/chess-board'
 
 @Component({
   selector: 'app-chess-board-square',
@@ -16,5 +17,6 @@ export class ChessBoardSquareComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   }
 }

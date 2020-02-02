@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵCompiler_compileModuleSync__POST_R3__ } from '@angular/core';
 import chessBoard from '../../../public/chess-board'
 import colors from '../../../public/colors'
 import chessPieces from '../../../public/chessPieces';
-import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-chess-board',
@@ -11,38 +10,108 @@ import { IfStmt } from '@angular/compiler';
 })
 export class ChessBoardComponent implements OnInit {
   chessBoard = chessBoard;
-  prevSquare: string;
-  currentSquare: string;
 
-  selectSquare(rowIdx, columnIdx) {
-    this.prevSquare = (this.prevSquare === this.currentSquare) ? null : this.currentSquare;
-    this.currentSquare = `${rowIdx}${columnIdx}`;
+  selectedRow: number;
+  selectedColumn: number;
+  selectedSquare: string;
+  selectedPiece: object;
+
+  clickedRow: number;
+  clickedColumn: number;
+  clickedSquare: string;
+  clickedPiece: object;
+
+  validMoves: string[];
+
+  onClick(rowIdx: number, columnIdx: number) {
+    this.clickedRow = rowIdx;
+    this.clickedColumn = columnIdx;
+    this.clickedSquare = `${rowIdx}${columnIdx}`;
+    this.clickedPiece = this.getClickedPiece();
+
+
+    if (this.validMove()) {
+      this.movePiece();
+      return;
+    }
+
+    // if clicked square has peice (pawn, bishop, etc ...), select square
+    if (this.clickedPiece) {
+      this.selectSquare();
+      return;
+    }
   }
 
-  isSelected(rowIdx, columnIdx) {
-    if (this.currentSquare !== `${rowIdx}${columnIdx}`) {
+  validRowMove(rowMove) {
+    return this.selectedRow + rowMove === this.clickedRow;
+  }
+
+  validColumnMove(columnMove) {
+    return this.selectedColumn + columnMove === this.clickedColumn;
+  }
+
+  validMove() {
+    // can't move piece if square is not selected
+    if (!this.selectedSquare) {
       return false;
     }
 
-    if (this.currentSquare === this.prevSquare) {
-      return false;
+    const moves = this.selectedPiece['moves'];
+
+    let isValid = false;
+    for (let i = 0; i < moves.length; i++) {
+      const move = moves[i];
+      if (this.validRowMove(move.row) && this.validColumnMove(move.column)) {
+        isValid = true;
+      }
     }
 
-    return true;
+    return isValid;
+  }
+
+  movePiece() {
+    const pieceToMove = this.chessBoard[this.selectedRow][this.selectedColumn];
+    // location from which piece moved from is now blank
+    this.chessBoard[this.selectedRow][this.selectedColumn] = null;
+    // location that piece moves to now has piece
+    this.chessBoard[this.clickedRow][this.clickedColumn] = pieceToMove;
+    // piece is no longer selected after it is moved
+    this.selectedSquare = null;
+  }
+
+  // if clicked square has piece, select square
+  getClickedPiece() {
+    // if chess piece found at clicked square return true
+    const pieceType = this.chessBoard[this.clickedRow][this.clickedColumn];
+    return chessPieces[pieceType];
+  }
+
+  selectSquare() {
+    // If selected square is clicked, deselect it
+    if (this.clickedSquare === this.selectedSquare) {
+      this.selectedRow = null;
+      this.selectedColumn = null;
+      this.selectedSquare = null;
+      this.selectedPiece = null;
+    } else {
+      // if unselected square is clicked, select it
+      this.selectedRow = this.clickedRow;
+      this.selectedColumn = this.clickedColumn;
+      this.selectedSquare = this.clickedSquare;
+      this.selectedPiece = this.getClickedPiece();
+    }
+  }
+
+  getChessPiece(row: number, column: number) {
+    return chessPieces[this.chessBoard[row][column]]
   }
 
   color(rowIdx, columnIdx) {
-
-    if (!this.isSelected(rowIdx, columnIdx)) {
-      return ((rowIdx + columnIdx) % 2 === 0) ? colors.EVEN : colors.ODD;
+    if (this.selectedSquare === `${rowIdx}${columnIdx}`) {
+      return colors.SELECTED;
     }
-
-    return colors.SELECTED;
-
-  }
-
-  chessPiece(rowIdx, columnIdx) {
-    return chessPieces[this.chessBoard[rowIdx][columnIdx]]
+    // Every other square has either even color or odd color
+    return ((rowIdx + columnIdx) % 2 === 0) ? colors.EVEN : colors.ODD;
   }
 
   constructor() { }

@@ -6,10 +6,9 @@
             *ngFor="let column of row; index as columnIdx"
             >
             <app-chess-board-square
-                [chessPiece]="chessPiece(rowIdx, columnIdx)"
-                [isSelected]="isSelected(rowIdx, columnIdx)"
+                [chessPiece]="getChessPiece(rowIdx, columnIdx)"
                 [color]="color(rowIdx, columnIdx)"
-                (click)="selectSquare(rowIdx, columnIdx)"
+                (click)="onClick(rowIdx, columnIdx)"
             >
             </app-chess-board-square>
         </div>
