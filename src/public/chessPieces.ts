@@ -120,11 +120,17 @@ const KING = [
 ]
 
 const BLACK_PAWN = [
-    { row: 1, column: 0 }
+    { row: 1, column: 0 },
+    { row: 1, column: 1, occation: "capture" },
+    { row: 1, column: -1, occation: "capture" },
+    { row: 2, column: 0, occation: "firstMove" },
 ]
 
 const WHITE_PAWN = [
-    { row: -1, column: 0 }
+    { row: -1, column: 0 },
+    { row: -1, column: 1, occation: "capture" },
+    { row: -1, column: -1, occation: "capture" },
+    { row: -2, column: 0, occation: "firstMove" },
 ]
 
 const MOVES = {

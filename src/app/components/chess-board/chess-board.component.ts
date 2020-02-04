@@ -45,11 +45,17 @@ export class ChessBoardComponent implements OnInit {
     }
   }
 
-  validRowMove(rowMove) {
+  validRowMove(rowMove, occation) {
+    if (!occation) {
+      return this.selectedRow + rowMove === this.clickedRow;
+    }
     return this.selectedRow + rowMove === this.clickedRow;
   }
 
-  validColumnMove(columnMove) {
+  validColumnMove(columnMove, occation) {
+    if (!occation) {
+      return this.selectedColumn + columnMove === this.clickedColumn;
+    }
     return this.selectedColumn + columnMove === this.clickedColumn;
   }
 
@@ -70,8 +76,9 @@ export class ChessBoardComponent implements OnInit {
     let isValid = false;
     for (let i = 0; i < moves.length; i++) {
       const move = moves[i];
-      if (this.validRowMove(move.row) &&
-        this.validColumnMove(move.column)) {
+      const occation = move['occation']
+      if (this.validRowMove(move.row, occation) &&
+        this.validColumnMove(move.column, occation)) {
         isValid = true;
       }
     }
@@ -142,6 +149,7 @@ export class ChessBoardComponent implements OnInit {
     this.chessBoard[this.clickedRow][this.clickedColumn] = pieceToMove;
     // piece is no longer selected after it is moved
     this.selectedSquare = null;
+    this.selectedPiece = null;
   }
 
   // if clicked square has piece, select square
@@ -153,7 +161,6 @@ export class ChessBoardComponent implements OnInit {
 
   selectSquare() {
     // If selected square is clicked, deselect it
-
     if (this.whiteTurn) {
       const piece = this.getClickedPiece();
       if (piece['color'] == "black") {
