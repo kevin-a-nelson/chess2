@@ -156,50 +156,62 @@ const MOVES = {
 
 export default {
     BR: {
+        color: 'black',
         image: "BlackRook",
         moves: MOVES.rook
     },
     WR: {
+        color: 'white',
         image: "WhiteRook",
         moves: MOVES.rook
     },
     BKn: {
+        color: 'black',
         image: "BlackKnight",
         moves: MOVES.knight
     },
     WKn: {
+        color: 'white',
         image: "WhiteKnight",
         moves: MOVES.knight
     },
     BB: {
+        color: 'black',
         image: "BlackBishop",
         moves: MOVES.bishop,
     },
     WB: {
+        color: 'white',
         image: "WhiteBishop",
         moves: MOVES.bishop,
     },
     BQ: {
+        color: 'black',
         image: "BlackQueen",
         moves: MOVES.queen
     },
     WQ: {
+        color: 'white',
         image: "WhiteQueen",
         moves: MOVES.queen
     },
     BKi: {
+        color: 'black',
         image: "BlackKing",
         moves: MOVES.king
     },
     WKi: {
+        color: 'white',
         image: "WhiteKing",
         moves: MOVES.king
     },
     BP: {
+        color: 'black',
         image: "BlackPawn",
         moves: MOVES.blackPawn
     },
     WP: {
+        color: 'white',
         image: "WhitePawn",
         moves: MOVES.whitePawn
     },

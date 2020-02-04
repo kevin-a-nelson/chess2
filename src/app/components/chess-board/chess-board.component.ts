@@ -11,6 +11,8 @@ import chessPieces from '../../../public/chessPieces';
 export class ChessBoardComponent implements OnInit {
   chessBoard = chessBoard;
 
+  whiteTurn: boolean = true;
+
   selectedRow: number;
   selectedColumn: number;
   selectedSquare: string;
@@ -50,23 +52,77 @@ export class ChessBoardComponent implements OnInit {
     return this.selectedColumn + columnMove === this.clickedColumn;
   }
 
-  validMove() {
-    // can't move piece if square is not selected
-    if (!this.selectedSquare) {
+  movedToSquareWithSameColor() {
+    // if moving peice to empty square, piece is not moving to square with same color piece
+    if (!this.clickedPiece) {
       return false;
     }
+    // white/black piece can't with to square with piece of the same color
+    if (this.clickedPiece['color'] === this.selectedPiece['color']) {
+      return true;
+    }
+    return false;
+  }
 
+  validPieceMove() {
     const moves = this.selectedPiece['moves'];
-
     let isValid = false;
     for (let i = 0; i < moves.length; i++) {
       const move = moves[i];
-      if (this.validRowMove(move.row) && this.validColumnMove(move.column)) {
+      if (this.validRowMove(move.row) &&
+        this.validColumnMove(move.column)) {
         isValid = true;
       }
     }
-
     return isValid;
+  }
+
+  hoppedOverPiece() {
+    let selectedColumn = this.selectedColumn
+    let clickedColumn = this.clickedColumn
+    let selectedRow = this.selectedRow
+    let clickedRow = this.clickedRow
+
+    let foundInteruptingPiece = false;
+    while (true) {
+      if (selectedColumn !== clickedColumn) {
+        selectedColumn > clickedColumn ? selectedColumn -= 1 : selectedColumn += 1
+      }
+      if (selectedRow !== clickedRow) {
+        selectedRow > clickedRow ? selectedRow -= 1 : selectedRow += 1
+      }
+
+      if (selectedColumn === clickedColumn && selectedRow === clickedRow) {
+        break;
+      }
+
+      if (chessBoard[selectedRow][selectedColumn]) {
+        foundInteruptingPiece = true;
+      }
+    }
+
+    return foundInteruptingPiece;
+  }
+
+  validMove() {
+    // can't move piece if piece is not selected
+    if (!this.selectedPiece) {
+      return false;
+    }
+
+    if (this.movedToSquareWithSameColor()) {
+      return false;
+    }
+
+    if (!this.validPieceMove()) {
+      return false;
+    }
+
+    if (this.hoppedOverPiece()) {
+      return false;
+    }
+
+    return true;
   }
 
   movePiece() {
@@ -77,6 +133,8 @@ export class ChessBoardComponent implements OnInit {
     this.chessBoard[this.clickedRow][this.clickedColumn] = pieceToMove;
     // piece is no longer selected after it is moved
     this.selectedSquare = null;
+    // Black's turn after white moves piece and vise versa
+    this.whiteTurn = !this.whiteTurn;
   }
 
   // if clicked square has piece, select square

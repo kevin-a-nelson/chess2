@@ -1,5 +1,5 @@
 export default {
     ODD: "#769656",
     EVEN: "#eeeed2",
-    SELECTED: "red",
+    SELECTED: "rgb(207, 222, 68)",
 }
