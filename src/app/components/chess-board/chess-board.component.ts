@@ -58,10 +58,8 @@ export class ChessBoardComponent implements OnInit {
     }
 
     // if row doesn't have any pieces, return false
-    if (occation === "capture") {
-      if (!this.clickedPiece) {
-        return false;
-      }
+    if (occation === "capture" && !this.clickedPiece) {
+      return false;
     }
 
     return true;
@@ -79,11 +77,11 @@ export class ChessBoardComponent implements OnInit {
       return newPieceColumn === this.clickedColumn
     }
 
-    if (occation === "capture") {
-      if (!this.clickedPiece) {
-        return false;
-      }
+    if (occation === "capture" && !this.clickedPiece) {
+      return false;
     }
+
+
 
     return true
   }
@@ -106,6 +104,15 @@ export class ChessBoardComponent implements OnInit {
     for (let i = 0; i < moves.length; i++) {
       const move = moves[i];
       const occation = move['occation']
+
+      if (occation === "capture" && !this.clickedPiece) {
+        continue;
+      }
+
+      if (move['atRow'] && this.selectedRow !== move['atRow']) {
+        continue;
+      }
+
       if (this.validRowMove(move.row, occation) &&
         this.validColumnMove(move.column, occation)) {
         isValid = true;

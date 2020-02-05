@@ -123,14 +123,14 @@ const BLACK_PAWN = [
     { row: 1, column: 0 },
     { row: 1, column: 1, occation: "capture" },
     { row: 1, column: -1, occation: "capture" },
-    { row: 2, column: 0, occation: "firstMove" },
+    { row: 2, column: 0, atRow: 1 },
 ]
 
 const WHITE_PAWN = [
     { row: -1, column: 0 },
     { row: -1, column: 1, occation: "capture" },
     { row: -1, column: -1, occation: "capture" },
-    { row: -2, column: 0, occation: "firstMove" },
+    { row: -2, column: 0, atRow: 6 },
 ]
 
 const MOVES = {
