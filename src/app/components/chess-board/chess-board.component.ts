@@ -46,17 +46,46 @@ export class ChessBoardComponent implements OnInit {
   }
 
   validRowMove(rowMove, occation) {
-    if (!occation) {
-      return this.selectedRow + rowMove === this.clickedRow;
+
+    const newPieceRow = this.selectedRow + rowMove;
+
+    if (newPieceRow !== this.clickedRow) {
+      return false;
     }
-    return this.selectedRow + rowMove === this.clickedRow;
+
+    if (!occation) {
+      return newPieceRow === this.clickedRow;
+    }
+
+    // if row doesn't have any pieces, return false
+    if (occation === "capture") {
+      if (!this.clickedPiece) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   validColumnMove(columnMove, occation) {
-    if (!occation) {
-      return this.selectedColumn + columnMove === this.clickedColumn;
+
+    const newPieceColumn = this.selectedColumn + columnMove;
+
+    if (newPieceColumn !== this.clickedColumn) {
+      return false;
     }
-    return this.selectedColumn + columnMove === this.clickedColumn;
+
+    if (!occation) {
+      return newPieceColumn === this.clickedColumn
+    }
+
+    if (occation === "capture") {
+      if (!this.clickedPiece) {
+        return false;
+      }
+    }
+
+    return true
   }
 
   movedToSquareWithSameColor() {
@@ -148,6 +177,8 @@ export class ChessBoardComponent implements OnInit {
     // location that piece moves to now has piece
     this.chessBoard[this.clickedRow][this.clickedColumn] = pieceToMove;
     // piece is no longer selected after it is moved
+    this.selectedRow = null;
+    this.selectedColumn = null;
     this.selectedSquare = null;
     this.selectedPiece = null;
   }
