@@ -45,45 +45,12 @@ export class ChessBoardComponent implements OnInit {
     }
   }
 
-  validRowMove(rowMove, occation) {
-
-    const newPieceRow = this.selectedRow + rowMove;
-
-    if (newPieceRow !== this.clickedRow) {
-      return false;
-    }
-
-    if (!occation) {
-      return newPieceRow === this.clickedRow;
-    }
-
-    // if row doesn't have any pieces, return false
-    if (occation === "capture" && !this.clickedPiece) {
-      return false;
-    }
-
-    return true;
+  validRowMove(rowMove) {
+    return this.selectedRow + rowMove === this.clickedRow
   }
 
-  validColumnMove(columnMove, occation) {
-
-    const newPieceColumn = this.selectedColumn + columnMove;
-
-    if (newPieceColumn !== this.clickedColumn) {
-      return false;
-    }
-
-    if (!occation) {
-      return newPieceColumn === this.clickedColumn
-    }
-
-    if (occation === "capture" && !this.clickedPiece) {
-      return false;
-    }
-
-
-
-    return true
+  validColumnMove(columnMove) {
+    return this.selectedColumn + columnMove === this.clickedColumn;
   }
 
   movedToSquareWithSameColor() {
@@ -103,9 +70,12 @@ export class ChessBoardComponent implements OnInit {
     let isValid = false;
     for (let i = 0; i < moves.length; i++) {
       const move = moves[i];
-      const occation = move['occation']
 
-      if (occation === "capture" && !this.clickedPiece) {
+      if (move['onCapture'] && !this.clickedPiece) {
+        continue;
+      }
+
+      if (move["onNoCapture"] && this.clickedPiece) {
         continue;
       }
 
@@ -113,8 +83,9 @@ export class ChessBoardComponent implements OnInit {
         continue;
       }
 
-      if (this.validRowMove(move.row, occation) &&
-        this.validColumnMove(move.column, occation)) {
+
+      if (this.validRowMove(move.row) &&
+        this.validColumnMove(move.column)) {
         isValid = true;
       }
     }
