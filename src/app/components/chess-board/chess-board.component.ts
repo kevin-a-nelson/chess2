@@ -237,6 +237,15 @@ export class ChessBoardComponent implements OnInit {
       const pieceRow = potientialCheck.row;
       const pieceColumn = potientialCheck.column;
       piece.moves.forEach((move) => {
+
+        if (move["onNoCapture"]) {
+          return;
+        }
+
+        if (move['onRow'] && pieceRow !== move['onRow']) {
+          return;
+        }
+
         if (kingRow - move.row === pieceRow &&
           kingColumn - move.column === pieceColumn) {
           isChecked = true;

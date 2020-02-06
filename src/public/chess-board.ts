@@ -1,7 +1,7 @@
 export default [
     ['BR', 'BKn', 'BB', 'BQ', 'BKi', 'BB', 'BKn', 'BR'],
-    ['BP', 'BP', 'BP', 'BP', 'BP', 'BP', 'BP', 'BP'],
-    [null, null, null, null, 'WQ', null, null, null],
+    ['BP', 'BP', 'BP', 'BP', null, 'BP', 'BP', 'BP'],
+    [null, null, null, null, 'WP', null, null, null],
     [null, null, null, null, 'WR', null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
