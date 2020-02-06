@@ -15,7 +15,7 @@ export class ChessBoardComponent implements OnInit {
 
   prevSeletedRow: number;
   prevSelectedColumn: number;
-  prevSelectedSquare: numer
+  prevSelectedSquare: number;
 
   selectedRow: number;
   selectedColumn: number;
@@ -27,19 +27,21 @@ export class ChessBoardComponent implements OnInit {
   clickedSquare: string;
   clickedPiece: object;
 
-  undoMove() {
+  undoMove(pieceTaken) {
     const pieceToMove = this.chessBoard[this.clickedRow][this.clickedColumn];
-    this.chessBoard[this.clickedRow][this.clickedColumn] = null;
+    this.chessBoard[this.clickedRow][this.clickedColumn] = pieceTaken;
     this.chessBoard[this.selectedRow][this.selectedColumn] = pieceToMove;
   }
 
   movePiece() {
     const pieceToMove = this.chessBoard[this.selectedRow][this.selectedColumn];
     // location from which piece moved from is now blank
+    const pieceTaken = this.chessBoard[this.clickedRow][this.clickedColumn];
     this.chessBoard[this.selectedRow][this.selectedColumn] = null;
     // location that piece moves to now has piece
     this.chessBoard[this.clickedRow][this.clickedColumn] = pieceToMove;
     // piece is no longer selected after it is moved
+    return pieceTaken
   }
 
   onClick(rowIdx: number, columnIdx: number) {
@@ -50,10 +52,10 @@ export class ChessBoardComponent implements OnInit {
 
     if (this.validMove()) {
 
-      this.movePiece();
+      let pieceTaken = this.movePiece();
 
       if (this.kingIsChecked()) {
-        this.undoMove();
+        this.undoMove(pieceTaken);
         this.whiteTurn = !this.whiteTurn
       }
 
@@ -201,6 +203,7 @@ export class ChessBoardComponent implements OnInit {
         if (!this.whiteTurn && piece[0] === 'B') {
           return;
         }
+        piece = chessPieces[piece]
         potientialChecks.push({ piece, row, column });
         return;
       }
