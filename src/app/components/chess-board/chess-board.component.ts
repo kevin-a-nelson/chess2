@@ -13,6 +13,10 @@ export class ChessBoardComponent implements OnInit {
 
   whiteTurn: boolean = true;
 
+  prevSeletedRow: number;
+  prevSelectedColumn: number;
+  prevSelectedSquare: numer
+
   selectedRow: number;
   selectedColumn: number;
   selectedSquare: string;
@@ -23,7 +27,20 @@ export class ChessBoardComponent implements OnInit {
   clickedSquare: string;
   clickedPiece: object;
 
-  validMoves: string[];
+  undoMove() {
+    const pieceToMove = this.chessBoard[this.clickedRow][this.clickedColumn];
+    this.chessBoard[this.clickedRow][this.clickedColumn] = null;
+    this.chessBoard[this.selectedRow][this.selectedColumn] = pieceToMove;
+  }
+
+  movePiece() {
+    const pieceToMove = this.chessBoard[this.selectedRow][this.selectedColumn];
+    // location from which piece moved from is now blank
+    this.chessBoard[this.selectedRow][this.selectedColumn] = null;
+    // location that piece moves to now has piece
+    this.chessBoard[this.clickedRow][this.clickedColumn] = pieceToMove;
+    // piece is no longer selected after it is moved
+  }
 
   onClick(rowIdx: number, columnIdx: number) {
     this.clickedRow = rowIdx;
@@ -32,7 +49,24 @@ export class ChessBoardComponent implements OnInit {
     this.clickedPiece = this.getClickedPiece();
 
     if (this.validMove()) {
+
       this.movePiece();
+
+      if (this.kingIsChecked()) {
+        this.undoMove();
+        this.whiteTurn = !this.whiteTurn
+      }
+
+      this.clickedRow = null;
+      this.clickedColumn = null;
+      this.clickedSquare = null;
+      this.clickedPiece = null;
+
+      this.selectedRow = null;
+      this.selectedColumn = null;
+      this.selectedSquare = null;
+      this.selectedPiece = null;
+
       // Black's turn after white moves piece and vise versa
       this.whiteTurn = !this.whiteTurn;
       return;
@@ -43,14 +77,6 @@ export class ChessBoardComponent implements OnInit {
       this.selectSquare();
       return;
     }
-  }
-
-  validRowMove(rowMove) {
-    return this.selectedRow + rowMove === this.clickedRow
-  }
-
-  validColumnMove(columnMove) {
-    return this.selectedColumn + columnMove === this.clickedColumn;
   }
 
   movedToSquareWithSameColor() {
@@ -79,13 +105,12 @@ export class ChessBoardComponent implements OnInit {
         continue;
       }
 
-      if (move['atRow'] && this.selectedRow !== move['atRow']) {
+      if (move['onRow'] && this.selectedRow !== move['onRow']) {
         continue;
       }
 
-
-      if (this.validRowMove(move.row) &&
-        this.validColumnMove(move.column)) {
+      if ((this.selectedRow + move.row === this.clickedRow &&
+        this.selectedColumn + move.column === this.clickedColumn)) {
         isValid = true;
       }
     }
@@ -127,6 +152,102 @@ export class ChessBoardComponent implements OnInit {
     return foundInteruptingPiece;
   }
 
+  getKingCords(piece) {
+    for (let row = 0; row < chessBoard.length; row++) {
+      for (let column = 0; column < chessBoard[row].length; column++) {
+        if (chessBoard[row][column] === piece) {
+          return [row, column]
+        }
+      }
+    }
+  }
+
+  kingIsChecked() {
+    const king = this.whiteTurn ? "WKi" : "BKi";
+    const kingCords = this.getKingCords(king);
+    const kingRow = kingCords[0]
+    const kingColumn = kingCords[1]
+
+    const directions = [
+      { row: 0, column: 1 },
+      { row: 0, column: -1 },
+
+      { row: 1, column: 0 },
+      { row: 1, column: 1 },
+      { row: 1, column: -1 },
+
+      { row: -1, column: 0 },
+      { row: -1, column: 1 },
+      { row: -1, column: -1 },
+    ]
+
+    let potientialChecks = [];
+
+    directions.forEach((direction) => {
+      let row = kingRow - direction.row;
+      let column = kingColumn - direction.column;
+
+      if (row < 0 || row > 7) { return }
+      if (column < 0 || column > 7) { return }
+
+      let piece = chessBoard[row][column]
+
+
+      if (piece) {
+        if (this.whiteTurn && piece[0] === 'W') {
+          return;
+        }
+
+        if (!this.whiteTurn && piece[0] === 'B') {
+          return;
+        }
+        potientialChecks.push({ piece, row, column });
+        return;
+      }
+
+      while (piece === null) {
+        row -= direction.row;
+        column -= direction.column;
+
+        if (row < 0 || row > 7) { return }
+        if (column < 0 || column > 7) { return }
+
+        piece = chessBoard[row][column]
+      }
+
+      if (this.whiteTurn && piece[0] === 'W') {
+        return;
+      }
+
+      if (!this.whiteTurn && piece[0] === 'B') {
+        return;
+      }
+
+      let pieceObject = chessPieces[piece]
+
+      potientialChecks.push({ 'piece': pieceObject, row, column })
+    })
+
+    let isChecked = false;
+    potientialChecks.forEach((potientialCheck) => {
+      const piece = potientialCheck.piece;
+      const pieceRow = potientialCheck.row;
+      const pieceColumn = potientialCheck.column;
+      piece.moves.forEach((move) => {
+        if (kingRow - move.row === pieceRow &&
+          kingColumn - move.column === pieceColumn) {
+          isChecked = true;
+        }
+      })
+      console.log(kingRow, kingColumn);
+      console.log(pieceRow, pieceColumn);
+      console.table(piece.moves)
+    })
+    // console.table(potientialChecks);
+
+    return isChecked;
+  }
+
   validMove() {
     // can't move piece if piece is not selected
     if (!this.selectedPiece) {
@@ -137,28 +258,15 @@ export class ChessBoardComponent implements OnInit {
       return false;
     }
 
-    if (!this.validPieceMove()) {
-      return false;
-    }
-
     if (this.hoppedOverPiece()) {
       return false;
     }
 
-    return true;
-  }
+    if (!this.validPieceMove()) {
+      return false;
+    }
 
-  movePiece() {
-    const pieceToMove = this.chessBoard[this.selectedRow][this.selectedColumn];
-    // location from which piece moved from is now blank
-    this.chessBoard[this.selectedRow][this.selectedColumn] = null;
-    // location that piece moves to now has piece
-    this.chessBoard[this.clickedRow][this.clickedColumn] = pieceToMove;
-    // piece is no longer selected after it is moved
-    this.selectedRow = null;
-    this.selectedColumn = null;
-    this.selectedSquare = null;
-    this.selectedPiece = null;
+    return true;
   }
 
   // if clicked square has piece, select square
@@ -184,6 +292,7 @@ export class ChessBoardComponent implements OnInit {
       }
     }
 
+    // if selected square is clicked, unselect it
     if (this.clickedSquare === this.selectedSquare) {
       this.selectedRow = null;
       this.selectedColumn = null;
