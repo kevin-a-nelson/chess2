@@ -2,13 +2,16 @@ import { Component, OnInit, ɵCompiler_compileModuleSync__POST_R3__ } from '@ang
 import chessBoard from '../../../public/chess-board'
 import colors from '../../../public/colors'
 import chessPieces from '../../../public/chessPieces';
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: 'app-chess-board',
   templateUrl: './chess-board.component.html',
   styleUrls: ['./chess-board.component.scss']
 })
+
 export class ChessBoardComponent implements OnInit {
+
   chessBoard = chessBoard;
 
   whiteTurn: boolean = true;
@@ -331,8 +334,23 @@ export class ChessBoardComponent implements OnInit {
     return ((rowIdx + columnIdx) % 2 === 0) ? colors.EVEN : colors.ODD;
   }
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+  }
 
   ngOnInit() {
+
+    console.log(chessBoard.toString())
+
+    const params = {
+      AsciiBoard: chessBoard.toString()
+    }
+
+    this.http.post('https://localhost:5001/api/ChessBoards', { AsciiBoard: chessBoard.toString() }).subscribe(data => {
+      console.log(data);
+    })
+
+    // this.http.get("https://localhost:5001/WeatherForecast").subscribe((data: any[]) => {
+    //   console.log(data);
+    // })
   }
 }

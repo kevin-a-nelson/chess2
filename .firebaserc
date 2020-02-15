@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "chess-504a0": {
+      "hosting": {
+        "chess2": [
+          "chess-504a0"
+        ]
+      }
+    }
+  }
+}

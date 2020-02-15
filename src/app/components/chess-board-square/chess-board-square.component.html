@@ -1,5 +1,5 @@
 <div class="chess-board-square" [ngStyle]="{background: color}">
     <div *ngIf="chessPiece">
-        <img src="assets/images/{{ chessPiece.image }}.png"/>
+        <img src="assets/images/{{ chessPiece['image'] }}.png"/>
     </div>
 </div>

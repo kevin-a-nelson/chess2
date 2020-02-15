@@ -122,8 +122,13 @@
               "devServerTarget": "chess2:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "chess2"
 }

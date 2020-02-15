@@ -1,0 +1,19 @@
+{
+  "hosting": [
+    {
+      "target": "chess2",
+      "public": "dist/chess2",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}
