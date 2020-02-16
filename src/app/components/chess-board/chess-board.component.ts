@@ -43,7 +43,7 @@ export class ChessBoardComponent implements OnInit {
     const pieceToMove = this.chessBoard[this.selectedRow][this.selectedColumn];
     // location from which piece moved from is now blank
     const pieceTaken = this.chessBoard[this.clickedRow][this.clickedColumn];
-    this.chessBoard[this.selectedRow][this.selectedColumn] = null;
+    this.chessBoard[this.selectedRow][this.selectedColumn] = "";
     // location that piece moves to now has piece
     this.chessBoard[this.clickedRow][this.clickedColumn] = pieceToMove;
     // piece is no longer selected after it is moved
@@ -134,9 +134,6 @@ export class ChessBoardComponent implements OnInit {
 
   hoppedOverPiece() {
 
-    console.log(this.chessBoard)
-
-
     let selectedColumn = this.selectedColumn
     let clickedColumn = this.clickedColumn
     let selectedRow = this.selectedRow
@@ -164,6 +161,7 @@ export class ChessBoardComponent implements OnInit {
       }
 
       if (this.chessBoard[selectedRow][selectedColumn]) {
+        console.log(selectedRow, selectedColumn)
         foundInteruptingPiece = true;
       }
     }
@@ -172,9 +170,9 @@ export class ChessBoardComponent implements OnInit {
   }
 
   getKingCords(piece) {
-    for (let row = 0; row < chessBoard.length; row++) {
-      for (let column = 0; column < chessBoard[row].length; column++) {
-        if (chessBoard[row][column] === piece) {
+    for (let row = 0; row < this.chessBoard.length; row++) {
+      for (let column = 0; column < this.chessBoard[row].length; column++) {
+        if (this.chessBoard[row][column] === piece) {
           return [row, column]
         }
       }
@@ -209,8 +207,8 @@ export class ChessBoardComponent implements OnInit {
       if (row < 0 || row > 7) { return }
       if (column < 0 || column > 7) { return }
 
-      let piece = chessBoard[row][column]
 
+      let piece = this.chessBoard[row][column]
 
       if (piece) {
         if (this.whiteTurn && piece[0] === 'W') {
@@ -225,14 +223,15 @@ export class ChessBoardComponent implements OnInit {
         return;
       }
 
-      while (piece === null) {
+
+      while (!piece) {
         row -= direction.row;
         column -= direction.column;
 
         if (row < 0 || row > 7) { return }
         if (column < 0 || column > 7) { return }
 
-        piece = chessBoard[row][column]
+        piece = this.chessBoard[row][column]
       }
 
       if (this.whiteTurn && piece[0] === 'W') {
@@ -253,6 +252,11 @@ export class ChessBoardComponent implements OnInit {
       const piece = potientialCheck.piece;
       const pieceRow = potientialCheck.row;
       const pieceColumn = potientialCheck.column;
+
+      if (!piece) {
+        return;
+      }
+
       piece.moves.forEach((move) => {
 
         if (move["onNoCapture"]) {
@@ -357,7 +361,6 @@ export class ChessBoardComponent implements OnInit {
   ngOnInit() {
     this.chessBoard = chessBoard;
     this.getUpdatedGame();
-    console.log(chessBoard.toString())
     this.mySubscription = interval(5000).subscribe((x => {
       this.getUpdatedGame()
     }));
