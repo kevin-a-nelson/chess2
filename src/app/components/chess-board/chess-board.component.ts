@@ -3,6 +3,7 @@ import chessBoard from '../../../public/chess-board'
 import colors from '../../../public/colors'
 import chessPieces from '../../../public/chessPieces';
 import { HttpClient } from "@angular/common/http";
+import { interval, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chess-board',
@@ -12,7 +13,9 @@ import { HttpClient } from "@angular/common/http";
 
 export class ChessBoardComponent implements OnInit {
 
-  chessBoard = chessBoard;
+  mySubscription: Subscription;
+
+  chessBoard;
 
   whiteTurn: boolean = true;
 
@@ -47,7 +50,7 @@ export class ChessBoardComponent implements OnInit {
     return pieceTaken
   }
 
-  onClick(rowIdx: number, columnIdx: number) {
+  async onClick(rowIdx: number, columnIdx: number) {
     this.clickedRow = rowIdx;
     this.clickedColumn = columnIdx;
     this.clickedSquare = `${rowIdx}${columnIdx}`;
@@ -55,7 +58,7 @@ export class ChessBoardComponent implements OnInit {
 
     if (this.validMove()) {
 
-      let pieceTaken = this.movePiece();
+      let pieceTaken = await this.movePiece();
 
       if (this.kingIsChecked()) {
         this.undoMove(pieceTaken);
@@ -74,6 +77,13 @@ export class ChessBoardComponent implements OnInit {
 
       // Black's turn after white moves piece and vise versa
       this.whiteTurn = !this.whiteTurn;
+
+      this.http.put('https://localhost:5001/api/ChessBoards/1', {
+        id: 1,
+        AsciiBoard: this.chessBoard.toString(),
+        whiteTurn: this.whiteTurn
+      }).subscribe()
+
       return;
     }
 
@@ -123,6 +133,10 @@ export class ChessBoardComponent implements OnInit {
   }
 
   hoppedOverPiece() {
+
+    console.log(this.chessBoard)
+
+
     let selectedColumn = this.selectedColumn
     let clickedColumn = this.clickedColumn
     let selectedRow = this.selectedRow
@@ -149,7 +163,7 @@ export class ChessBoardComponent implements OnInit {
         break;
       }
 
-      if (chessBoard[selectedRow][selectedColumn]) {
+      if (this.chessBoard[selectedRow][selectedColumn]) {
         foundInteruptingPiece = true;
       }
     }
@@ -270,14 +284,17 @@ export class ChessBoardComponent implements OnInit {
     }
 
     if (this.movedToSquareWithSameColor()) {
+      console.log("moved to square with same color")
       return false;
     }
 
     if (this.hoppedOverPiece()) {
+      console.log("hopped over piece")
       return false;
     }
 
     if (!this.validPieceMove()) {
+      console.log("invalid piece move")
       return false;
     }
 
@@ -338,19 +355,26 @@ export class ChessBoardComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.chessBoard = chessBoard;
+    this.getUpdatedGame();
     console.log(chessBoard.toString())
+    this.mySubscription = interval(5000).subscribe((x => {
+      this.getUpdatedGame()
+    }));
+  }
 
-    const params = {
-      AsciiBoard: chessBoard.toString()
-    }
-
-    this.http.post('https://localhost:5001/api/ChessBoards', { AsciiBoard: chessBoard.toString() }).subscribe(data => {
-      console.log(data);
+  getUpdatedGame() {
+    this.http.get('https://localhost:5001/api/ChessBoards/1').subscribe(data => {
+      let asciiBoard = data['asciiBoard'];
+      asciiBoard = asciiBoard.split(',')
+      var i, j, temparray, chunk = 8;
+      var newBoard = [];
+      for (i = 0, j = asciiBoard.length; i < j; i += chunk) {
+        temparray = asciiBoard.slice(i, i + chunk);
+        newBoard.push(temparray)
+      }
+      this.chessBoard = newBoard;
+      this.whiteTurn = data['whiteTurn']
     })
-
-    // this.http.get("https://localhost:5001/WeatherForecast").subscribe((data: any[]) => {
-    //   console.log(data);
-    // })
   }
 }
