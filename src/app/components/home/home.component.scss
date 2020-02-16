@@ -1,0 +1,35 @@
+.home-container {
+    width: 300px;
+    margin: 0px auto;
+    text-align: center;
+
+    margin-top: 10vh;
+
+    .img-container {
+        margin: 0px auto;
+        width: 200px;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .btn {
+        width: 100%;
+        height: 50px;
+        font-size: 15px;
+        font-weight: 900;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+
+    background: #eee;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+html,
+body {
+    background: #312e2b;
+}

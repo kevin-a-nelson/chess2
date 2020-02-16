@@ -272,9 +272,6 @@ export class ChessBoardComponent implements OnInit {
           isChecked = true;
         }
       })
-      console.log(kingRow, kingColumn);
-      console.log(pieceRow, pieceColumn);
-      console.table(piece.moves)
     })
     // console.table(potientialChecks);
 
@@ -288,17 +285,14 @@ export class ChessBoardComponent implements OnInit {
     }
 
     if (this.movedToSquareWithSameColor()) {
-      console.log("moved to square with same color")
       return false;
     }
 
     if (this.hoppedOverPiece()) {
-      console.log("hopped over piece")
       return false;
     }
 
     if (!this.validPieceMove()) {
-      console.log("invalid piece move")
       return false;
     }
 
