@@ -11,6 +11,8 @@ import { PasswordComponent } from './components/password/password.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { PickColorComponent } from './components/pick-color/pick-color.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ChessGamesComponent } from './components/chess-games/chess-games.component';
+import { InputNameComponent } from './components/input-name/input-name.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CreateChessGameComponent,
     PasswordComponent,
     PickColorComponent,
+    ChessGamesComponent,
+    InputNameComponent,
   ],
   imports: [
     BrowserModule,

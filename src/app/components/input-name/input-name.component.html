@@ -1,0 +1,21 @@
+
+
+<div class="input-name">
+    <div class="form-group">
+        <label>
+            Create Name
+        </label>
+        <input
+            placeholder="Ex. Kevins Game"
+            class="form-control"
+            type="text"
+            [formControl]="name"
+        >
+    </div>
+    <button
+        (click)="onSubmit()"
+        class="btn btn-primary"
+    >
+    Submit
+    </button>
+</div>

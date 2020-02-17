@@ -5,6 +5,7 @@ import { ChessBoardSquareComponent } from './components/chess-board-square/chess
 import { HomeComponent } from './components/home/home.component';
 import { CreateChessGameComponent } from './components/create-chess-game/create-chess-game.component';
 import { PasswordComponent } from './components/password/password.component';
+import { ChessGamesComponent } from './components/chess-games/chess-games.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'password',
     component: PasswordComponent
+  },
+  {
+    path: 'join',
+    component: ChessGamesComponent
   },
   {
     path: '',

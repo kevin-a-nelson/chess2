@@ -1,12 +1,18 @@
 
 <app-pick-color 
-    *ngIf="status==='color'"
+    *ngIf="step===1"
     (newColor)="onNewColor($event)"
     >
 </app-pick-color>
 
+<app-input-name
+    *ngIf="step===2"
+    (newName)="onNewName($event)"
+>
+</app-input-name>
+
 <app-password   
-    *ngIf="status==='password'"
+    *ngIf="step===3"
     (newPassword)="onNewPassword($event)"
     >
 </app-password>

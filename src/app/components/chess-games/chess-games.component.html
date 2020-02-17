@@ -1,0 +1,14 @@
+<div class="chess-games">
+    <div class="header alert alert-light" role="alert">
+        Join a Game
+    </div>
+    <div [ngClass]="(chessGame.whiteTurn) ? 'white color chess-game' : 'black color chess-game'" 
+         class="chess-game"
+         *ngFor="let chessGame of chessGames"
+         (click)="onClick(chessGame.id)"
+         >
+        <div class="name">{{ chessGame.name }}</div>
+        <button class="btn btn-primary">Join</button>
+    </div>
+
+</div>

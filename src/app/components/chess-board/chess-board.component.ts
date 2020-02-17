@@ -34,6 +34,10 @@ export class ChessBoardComponent implements OnInit {
   clickedSquare: string;
   clickedPiece: object;
 
+  gameId;
+  name;
+  password;
+
   undoMove(pieceTaken) {
     const pieceToMove = this.chessBoard[this.clickedRow][this.clickedColumn];
     this.chessBoard[this.clickedRow][this.clickedColumn] = pieceTaken;
@@ -79,10 +83,12 @@ export class ChessBoardComponent implements OnInit {
       // Black's turn after white moves piece and vise versa
       this.whiteTurn = !this.whiteTurn;
 
-      this.http.put('https://localhost:5001/api/ChessBoards/1', {
-        id: 1,
+      this.http.put(`https://localhost:5001/api/ChessBoards/${this.gameId}`, {
+        id: this.gameId,
         AsciiBoard: this.chessBoard.toString(),
-        whiteTurn: this.whiteTurn
+        whiteTurn: this.whiteTurn,
+        name: this.name,
+        password: this.password,
       }).subscribe()
 
       return;
@@ -354,6 +360,7 @@ export class ChessBoardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.gameId = this.route.snapshot.paramMap.get('id');
     this.chessBoard = chessBoard;
     this.getUpdatedGame();
     this.mySubscription = interval(5000).subscribe((x => {
@@ -362,8 +369,7 @@ export class ChessBoardComponent implements OnInit {
   }
 
   getUpdatedGame() {
-    let gameId = this.route.snapshot.paramMap.get('id');
-    this.http.get(`https://localhost:5001/api/ChessBoards/${gameId}`).subscribe(data => {
+    this.http.get(`https://localhost:5001/api/ChessBoards/${this.gameId}`).subscribe(data => {
       let asciiBoard = data['asciiBoard'];
       asciiBoard = asciiBoard.split(',')
       var i, j, temparray, chunk = 8;
@@ -374,6 +380,9 @@ export class ChessBoardComponent implements OnInit {
       }
       this.chessBoard = newBoard;
       this.whiteTurn = data['whiteTurn']
+      this.gameId = data['id']
+      this.name = data['name']
+      this.password = data['password']
     })
   }
 }

@@ -1,0 +1,50 @@
+.chess-games {
+    width: 400px;
+    margin: 0px auto;
+    margin-top: 10px;
+
+    .header {
+        text-align: center;
+        font-size: 30px;
+    }
+}
+
+.chess-game {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    background: #fefefe;
+    // height: 50px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+
+    .name {
+        width: 80%;
+        text-align: center;
+        line-height: 90px;
+    }
+
+    button {
+        width: 20%;
+        border-top-left-radius: 0px !important;
+        border-bottom-left-radius: 0px !important;
+    }
+
+    .color {
+        height: 100px;
+        width: 100px;
+    }
+
+    &.black {
+        background: black;
+        color: #818182;
+    }
+
+    &.white {
+        background: #eee;
+        color: #818182;
+    }
+}
