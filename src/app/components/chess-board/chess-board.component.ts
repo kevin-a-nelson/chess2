@@ -4,6 +4,7 @@ import colors from '../../../public/colors'
 import chessPieces from '../../../public/chessPieces';
 import { HttpClient } from "@angular/common/http";
 import { interval, Observable, Subscription } from 'rxjs';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-chess-board',
@@ -349,7 +350,7 @@ export class ChessBoardComponent implements OnInit {
     return ((rowIdx + columnIdx) % 2 === 0) ? colors.EVEN : colors.ODD;
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -361,7 +362,8 @@ export class ChessBoardComponent implements OnInit {
   }
 
   getUpdatedGame() {
-    this.http.get('https://localhost:5001/api/ChessBoards/1').subscribe(data => {
+    let gameId = this.route.snapshot.paramMap.get('id');
+    this.http.get(`https://localhost:5001/api/ChessBoards/${gameId}`).subscribe(data => {
       let asciiBoard = data['asciiBoard'];
       asciiBoard = asciiBoard.split(',')
       var i, j, temparray, chunk = 8;

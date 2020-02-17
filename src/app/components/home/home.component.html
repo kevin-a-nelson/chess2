@@ -4,7 +4,13 @@
         <div class="img-container">
             <img src="assets/images/ChessKing.png">
         </div>
-        <button class="btn">Create Game</button>
-        <button class="btn">Join Game</button>
+
+        <button (click)="onCreate()" type="button" class="btn btn-secondary btn-lg btn-block" [disabled]="disabled">
+            Create Game
+        </button>
+
+        <button (click)="onJoin()" type="button" class="btn btn-outline-secondary btn-lg btn-block">
+            Join Game
+        </button>
     </div>
 </div>

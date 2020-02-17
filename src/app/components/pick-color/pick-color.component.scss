@@ -1,0 +1,51 @@
+.pick-color {
+
+    display: flex;
+    width: 420px;
+    justify-content: space-between;
+    margin: 0px auto;
+
+    .color {
+        width: 200px;
+        height: 200px;
+
+        border-radius: 10px;
+
+        &.black {
+            background: #111;
+            border: 1px solid #fff;
+        }
+
+        &.white {
+            background: #fff;
+            color: #fff;
+            border: 1px solid #999;
+        }
+
+        &.black:hover {
+            background: #555;
+            color: #555;
+            border: 1px solid #fff;
+        }
+
+        &.white:hover {
+            background: #ddd;
+            color: #ddd;
+            border: 1px solid #999;
+        }
+
+
+    }
+
+    background: #eee;
+}
+
+.create-chess-game {
+    margin: 0px auto;
+    margin-top: 20vh;
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+    background: #eee;
+    width: 500px;
+}

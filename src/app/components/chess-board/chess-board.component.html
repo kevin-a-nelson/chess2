@@ -1,8 +1,17 @@
 <div class="chess-board">
-    <div class="row"
+
+    <div class="alert alert-light" *ngIf="whiteTurn" role="alert">
+        Your Turn
+    </div>
+
+    <div class="alert alert-light" *ngIf="!whiteTurn" role="alert">
+        Opponents Turn
+    </div>
+
+    <div class="chess-row"
         *ngFor="let row of chessBoard; index as rowIdx"
         >
-        <div class="column"
+        <div
             *ngFor="let column of row; index as columnIdx"
             >
             <app-chess-board-square
