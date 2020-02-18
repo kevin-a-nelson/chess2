@@ -20,7 +20,8 @@ export class ChessGamesComponent implements OnInit {
     })
   }
 
-  onClick(gameId) {
-    this.router.navigate([`/play/${gameId}`]);
+  onClick(gameId, creatorIsWhite) {
+    const color = creatorIsWhite ? "black" : "white"
+    this.router.navigate([`/play/${gameId}/${color}`]);
   }
 }

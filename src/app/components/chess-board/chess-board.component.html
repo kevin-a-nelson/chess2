@@ -1,19 +1,17 @@
 <div class="chess-board">
 
-    <div class="alert alert-light" *ngIf="whiteTurn" role="alert">
+    <div class="alert alert-light" *ngIf="whiteTurn === playerIsWhite" role="alert">
         Your Turn
     </div>
 
-    <div class="alert alert-light" *ngIf="!whiteTurn" role="alert">
+    <div class="alert alert-light" *ngIf="whiteTurn !== playerIsWhite" role="alert">
         Opponents Turn
     </div>
 
     <div class="chess-row"
         *ngFor="let row of chessBoard; index as rowIdx"
         >
-        <div
-            *ngFor="let column of row; index as columnIdx"
-            >
+        <div *ngFor="let column of row; index as columnIdx">
             <app-chess-board-square
                 [chessPiece]="getChessPiece(rowIdx, columnIdx)"
                 [color]="color(rowIdx, columnIdx)"

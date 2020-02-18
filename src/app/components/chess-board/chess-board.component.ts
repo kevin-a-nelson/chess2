@@ -20,6 +20,8 @@ export class ChessBoardComponent implements OnInit {
 
   whiteTurn: boolean = true;
 
+  playerIsWhite: boolean;
+
   prevSeletedRow: number;
   prevSelectedColumn: number;
   prevSelectedSquare: number;
@@ -56,12 +58,20 @@ export class ChessBoardComponent implements OnInit {
   }
 
   async onClick(rowIdx: number, columnIdx: number) {
+
+    if (this.playerIsWhite != this.whiteTurn) {
+      return;
+    }
+
+
     this.clickedRow = rowIdx;
     this.clickedColumn = columnIdx;
     this.clickedSquare = `${rowIdx}${columnIdx}`;
     this.clickedPiece = this.getClickedPiece();
 
+
     if (this.validMove()) {
+
 
       let pieceTaken = await this.movePiece();
 
@@ -361,6 +371,10 @@ export class ChessBoardComponent implements OnInit {
 
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id');
+    this.playerIsWhite = this.route.snapshot.paramMap.get('color') === 'white' ? true : false;
+
+    console.log(this.playerIsWhite)
+
     this.chessBoard = chessBoard;
     this.getUpdatedGame();
     this.mySubscription = interval(5000).subscribe((x => {

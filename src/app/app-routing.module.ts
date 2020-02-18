@@ -9,7 +9,7 @@ import { ChessGamesComponent } from './components/chess-games/chess-games.compon
 
 const routes: Routes = [
   {
-    path: 'play/:id',
+    path: 'play/:id/:color',
     component: ChessBoardComponent,
   },
   {
@@ -30,7 +30,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/play',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
 ];

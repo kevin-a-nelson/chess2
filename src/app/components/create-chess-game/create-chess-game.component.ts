@@ -41,6 +41,7 @@ export class CreateChessGameComponent implements OnInit {
     this.http.post("https://localhost:5001/api/ChessBoards", {
       "asciiBoard": "BR,BKn,BB,BQ,BKi,BB,BKn,BR,BP,BP,BP,BP,BP,BP,BP,BP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,WP,WP,WP,WP,WP,WP,WP,WP,WR,WKn,WB,WQ,WKi,WB,WKn,WR",
       "whiteTurn": this.color === "white" ? true : false,
+      "creatorIsWhite": this.color === "white" ? true : false,
       "name": this.name,
       "password": this.password
     }).subscribe(
@@ -49,6 +50,6 @@ export class CreateChessGameComponent implements OnInit {
   }
 
   setCreatedChessBoardId(id) {
-    this.router.navigate([`/play/${id}`]);
+    this.router.navigate([`/play/${id}/${this.color}`]);
   }
 }
