@@ -1,1 +1,1 @@
-export default "https://localhost:5001"
+export default "https://kevinchess.azurewebsites.net"
