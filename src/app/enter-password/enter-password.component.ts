@@ -2,6 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import backendUrl from '../../public/backend'
 
 
 @Component({
@@ -22,9 +23,9 @@ export class EnterPasswordComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.http.get(`https://localhost:5001/api/ChessBoards/${this.id}`).subscribe(data => {
+    this.http.get(`${backendUrl}/api/ChessBoards/${this.id}`).subscribe(data => {
       this.password = data['password']
-      this.color = data['creatorIsWhite'] ? 'black' : 'false'
+      this.color = data['creatorIsWhite'] ? 'black' : 'white'
     })
   }
 
@@ -35,7 +36,6 @@ export class EnterPasswordComponent implements OnInit {
     } else {
       this.errorMsg = "Invalid Password";
     }
-    console.log(this.id, this.password, this.color, this.inputPassword.value)
   }
 
 }

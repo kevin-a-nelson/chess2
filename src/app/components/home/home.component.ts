@@ -12,7 +12,6 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router) { }
 
   onCreate() {
-    console.log("Created")
     this.router.navigate(['/new'])
   }
 

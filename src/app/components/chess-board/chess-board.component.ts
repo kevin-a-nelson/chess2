@@ -3,8 +3,9 @@ import chessBoard from '../../../public/chess-board'
 import colors from '../../../public/colors'
 import chessPieces from '../../../public/chessPieces';
 import { HttpClient } from "@angular/common/http";
-import { interval, Observable, Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import backendUrl from '../../../public/backend'
 
 @Component({
   selector: 'app-chess-board',
@@ -20,7 +21,7 @@ export class ChessBoardComponent implements OnInit {
 
   whiteTurn: boolean = true;
 
-  playerIsWhite: boolean;
+  playerIsWhite: boolean = true;
 
   prevSeletedRow: number;
   prevSelectedColumn: number;
@@ -92,7 +93,7 @@ export class ChessBoardComponent implements OnInit {
       // Black's turn after white moves piece and vise versa
       this.whiteTurn = !this.whiteTurn;
 
-      this.http.put(`https://localhost:5001/api/ChessBoards/${this.gameId}`, {
+      this.http.put(`${backendUrl}/api/ChessBoards/${this.gameId}`, {
         id: this.gameId,
         AsciiBoard: this.chessBoard.toString(),
         whiteTurn: this.whiteTurn,
@@ -177,7 +178,6 @@ export class ChessBoardComponent implements OnInit {
       }
 
       if (this.chessBoard[selectedRow][selectedColumn]) {
-        console.log(selectedRow, selectedColumn)
         foundInteruptingPiece = true;
       }
     }
@@ -372,7 +372,7 @@ export class ChessBoardComponent implements OnInit {
     this.gameId = this.route.snapshot.paramMap.get('id');
     this.playerIsWhite = this.route.snapshot.paramMap.get('color') === 'white' ? true : false;
 
-    console.log(this.playerIsWhite)
+    console.log(this.whiteTurn, this.playerIsWhite)
 
     this.chessBoard = chessBoard;
     this.getUpdatedGame();
@@ -382,7 +382,7 @@ export class ChessBoardComponent implements OnInit {
   }
 
   getUpdatedGame() {
-    this.http.get(`https://localhost:5001/api/ChessBoards/${this.gameId}`).subscribe(data => {
+    this.http.get(`${backendUrl}/api/ChessBoards/${this.gameId}`).subscribe(data => {
       let asciiBoard = data['asciiBoard'];
       asciiBoard = asciiBoard.split(',')
       var i, j, temparray, chunk = 8;

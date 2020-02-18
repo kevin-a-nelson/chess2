@@ -30,7 +30,7 @@ const routes: Routes = [
     component: ChessGamesComponent
   },
   {
-    path: '',
+    path: '**',
     redirectTo: '/home',
     pathMatch: 'full'
   },

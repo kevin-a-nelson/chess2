@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
+import backendUrl from '../../../public/backend'
 
 @Component({
   selector: 'app-chess-games',
@@ -14,9 +15,8 @@ export class ChessGamesComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
-    this.http.get("https://localhost:5001/api/ChessBoards").subscribe(res => {
+    this.http.get(`${backendUrl}/api/ChessBoards`).subscribe(res => {
       this.chessGames = res
-      console.log(res)
     })
   }
 

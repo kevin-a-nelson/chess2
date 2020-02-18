@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
+import backendUrl from '../../../public/backend'
 
 @Component({
   selector: 'app-create-chess-game',
@@ -32,15 +33,14 @@ export class CreateChessGameComponent implements OnInit {
   }
 
   onNewPassword(password) {
-    console.log(password)
     this.password = password;
     this.createGame();
   }
 
   createGame() {
-    this.http.post("https://localhost:5001/api/ChessBoards", {
+    this.http.post(`${backendUrl}/api/ChessBoards`, {
       "asciiBoard": "BR,BKn,BB,BQ,BKi,BB,BKn,BR,BP,BP,BP,BP,BP,BP,BP,BP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,WP,WP,WP,WP,WP,WP,WP,WP,WR,WKn,WB,WQ,WKi,WB,WKn,WR",
-      "whiteTurn": this.color === "white" ? true : false,
+      "whiteTurn": true,
       "creatorIsWhite": this.color === "white" ? true : false,
       "name": this.name,
       "password": this.password

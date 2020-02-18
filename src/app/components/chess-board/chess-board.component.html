@@ -2,13 +2,18 @@
 
 
 
-    <div class="alert alert-light" *ngIf="whiteTurn === playerIsWhite" role="alert">
+    <div class="alert alert-light" *ngIf="(whiteTurn && playerIsWhite) || (!whiteTurn && !playerIsWhite); else elseBlock" role="alert">
         Your Turn
     </div>
 
-    <div class="alert alert-light" *ngIf="whiteTurn !== playerIsWhite" role="alert">
-        Opponents Turn
-    </div>
+    <ng-template #elseBlock>
+        <div class="alert alert-light" role="alert">
+            Opponents Turn
+        </div>
+    </ng-template>
+
+
+
 
 
 

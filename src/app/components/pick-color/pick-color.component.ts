@@ -13,7 +13,6 @@ export class PickColorComponent implements OnInit {
   constructor() { }
 
   onPickColor(color: string) {
-    console.log(color)
     this.newColor.emit(color)
   }
 
