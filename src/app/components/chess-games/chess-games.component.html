@@ -5,7 +5,7 @@
     <div [ngClass]="(chessGame.creatorIsWhite) ? 'black color chess-game' : 'white color chess-game'" 
          class="chess-game"
          *ngFor="let chessGame of chessGames"
-         (click)="onClick(chessGame.id, chessGame.creatorIsWhite)"
+         (click)="onClick(chessGame.id)"
          >
         <div class="name">{{ chessGame.name }}</div>
         <button class="btn btn-primary">Join</button>

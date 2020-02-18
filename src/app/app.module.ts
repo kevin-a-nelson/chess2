@@ -13,6 +13,7 @@ import { PickColorComponent } from './components/pick-color/pick-color.component
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChessGamesComponent } from './components/chess-games/chess-games.component';
 import { InputNameComponent } from './components/input-name/input-name.component';
+import { EnterPasswordComponent } from './enter-password/enter-password.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { InputNameComponent } from './components/input-name/input-name.component
     PickColorComponent,
     ChessGamesComponent,
     InputNameComponent,
+    EnterPasswordComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { CreateChessGameComponent } from './components/create-chess-game/create-chess-game.component';
 import { PasswordComponent } from './components/password/password.component';
 import { ChessGamesComponent } from './components/chess-games/chess-games.component';
+import { EnterPasswordComponent } from './enter-password/enter-password.component';
 
 const routes: Routes = [
   {
@@ -21,8 +22,8 @@ const routes: Routes = [
     component: CreateChessGameComponent
   },
   {
-    path: 'password',
-    component: PasswordComponent
+    path: 'password/:id',
+    component: EnterPasswordComponent
   },
   {
     path: 'join',

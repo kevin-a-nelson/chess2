@@ -63,7 +63,6 @@ export class ChessBoardComponent implements OnInit {
       return;
     }
 
-
     this.clickedRow = rowIdx;
     this.clickedColumn = columnIdx;
     this.clickedSquare = `${rowIdx}${columnIdx}`;

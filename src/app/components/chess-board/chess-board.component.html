@@ -1,5 +1,7 @@
 <div class="chess-board">
 
+
+
     <div class="alert alert-light" *ngIf="whiteTurn === playerIsWhite" role="alert">
         Your Turn
     </div>
@@ -7,6 +9,8 @@
     <div class="alert alert-light" *ngIf="whiteTurn !== playerIsWhite" role="alert">
         Opponents Turn
     </div>
+
+
 
     <div class="chess-row"
         *ngFor="let row of chessBoard; index as rowIdx"
