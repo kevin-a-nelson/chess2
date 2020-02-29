@@ -15,6 +15,7 @@ export class CreateChessGameComponent implements OnInit {
   name: string;
   password;
   createdChessBoardId: number;
+  public now: Date = new Date();
 
   constructor(private router: Router, private http: HttpClient) { }
 
@@ -43,7 +44,8 @@ export class CreateChessGameComponent implements OnInit {
       "whiteTurn": true,
       "creatorIsWhite": this.color === "white" ? true : false,
       "name": this.name,
-      "password": this.password
+      "password": this.password,
+      "createdAt": this.now.toISOString(),
     }).subscribe(
       res => this.setCreatedChessBoardId(res['id'])
     )

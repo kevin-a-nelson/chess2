@@ -6,6 +6,8 @@ import { HttpClient } from "@angular/common/http";
 import { interval, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import backendUrl from '../../../public/backend'
+import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-chess-board',
@@ -36,6 +38,8 @@ export class ChessBoardComponent implements OnInit {
   clickedColumn: number;
   clickedSquare: string;
   clickedPiece: object;
+
+  updateGame: boolean = true;
 
   gameId;
   name;
@@ -365,15 +369,15 @@ export class ChessBoardComponent implements OnInit {
     return ((rowIdx + columnIdx) % 2 === 0) ? colors.EVEN : colors.ODD;
   }
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private http: HttpClient, private route: ActivatedRoute) { }
+
+  ngOnDestroy() {
+    this.mySubscription.unsubscribe();
   }
 
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id');
     this.playerIsWhite = this.route.snapshot.paramMap.get('color') === 'white' ? true : false;
-
-    console.log(this.whiteTurn, this.playerIsWhite)
-
     this.chessBoard = chessBoard;
     this.getUpdatedGame();
     this.mySubscription = interval(5000).subscribe((x => {
@@ -382,6 +386,7 @@ export class ChessBoardComponent implements OnInit {
   }
 
   getUpdatedGame() {
+
     this.http.get(`${backendUrl}/api/ChessBoards/${this.gameId}`).subscribe(data => {
       let asciiBoard = data['asciiBoard'];
       asciiBoard = asciiBoard.split(',')
