@@ -39,6 +39,7 @@ export class ChessBoardComponent implements OnInit {
   clickedSquare: string;
   clickedPiece: object;
 
+  creatorIsWhite: boolean = true;
   updateGame: boolean = true;
 
   gameId;
@@ -373,6 +374,15 @@ export class ChessBoardComponent implements OnInit {
 
   ngOnDestroy() {
     this.mySubscription.unsubscribe();
+
+    if ((this.creatorIsWhite && this.route.snapshot.paramMap.get('color') === 'white') ||
+      (!this.creatorIsWhite && this.route.snapshot.paramMap.get('color') === 'black')
+    ) {
+      this.http.delete(`${backendUrl}/api/ChessBoards/${this.gameId}`).subscribe(
+        res => console.log(res),
+        err => console.log(err),
+      )
+    }
   }
 
   ngOnInit() {
@@ -398,6 +408,7 @@ export class ChessBoardComponent implements OnInit {
       }
       this.chessBoard = newBoard;
       this.whiteTurn = data['whiteTurn']
+      this.creatorIsWhite = data['creatorIsWhite']
       this.gameId = data['id']
       this.name = data['name']
       this.password = data['password']

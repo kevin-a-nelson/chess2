@@ -24,20 +24,18 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.now.getHours())
+    // let boardIds: Object = []
+    // this.http.get(`${backendUrl}/api/ChessBoards`).subscribe((res: Object[]) => {
+    //   if (res.length === 0) {
+    //     return
+    //   }
 
-    let boardIds: Object = []
-    this.http.get(`${backendUrl}/api/ChessBoards`).subscribe((res: Object[]) => {
-      if (res.length === 0) {
-        return
-      }
-
-      res.forEach((board) => {
-        this.http.delete(`${backendUrl}/api/ChessBoards/${board['id']}`).subscribe(
-          res => console.log(res),
-          err => console.log(err),
-        )
-      })
-    })
+    //   res.forEach((board) => {
+    //     this.http.delete(`${backendUrl}/api/ChessBoards/${board['id']}`).subscribe(
+    //       res => console.log(res),
+    //       err => console.log(err),
+    //     )
+    //   })
+    // })
   }
 }
